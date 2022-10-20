@@ -76,11 +76,57 @@ const cardNumberPattern = {
     const foundMask = dynamicMasked.compiledMasks.find( function (item) {
       return number.match(item.regex)
     })
-
-    console.log(foundMask)
-
     return foundMask
   }
 }
 
 const cardNumberMasked = IMask(cardNumber, cardNumberPattern)
+
+const addButton = document.querySelector("#add-card")
+addButton.addEventListener("click", function(){
+  alert('adicionei')
+})
+
+document.querySelector('form').addEventListener("submit", (e) => {
+  e.preventDefault()
+})
+
+const cardHolder = document.querySelector('#card-holder')
+cardHolder.addEventListener("input", () => {
+  const ccHolder = document.querySelector(".cc-holder .value")
+
+  ccHolder.innerText = cardHolder.value.length > 3 ? cardHolder.value : 'JHON DOE'
+})
+
+securityCodeMasked.on('accept', () => {
+  const cardType = cardNumberMasked.masked.currentMask.cardType
+  setCardType(cardType)
+  updateSecurityCode(securityCodeMasked.value)
+})
+
+function updateSecurityCode(code){
+  const ccSecurity = document.querySelector(".cc-security .value")
+
+  ccSecurity.innerText = code.length === 0 ? '123' : code 
+}
+
+cardNumberMasked.on('accept', () => {
+  updateCard(cardNumberMasked.value)
+})
+
+function updateCard(number){
+  const ccNumber = document.querySelector(".cc-number")
+  const defaultNumber = '1234 5678 9012 3456'
+
+  ccNumber.innerText = number.length === 0 ? defaultNumber : number
+}
+
+
+expirationDateMasked.on('accept', () => {
+  updateExpirationDate(expirationDateMasked.value)
+})
+
+function updateExpirationDate(date){
+  const ccExpiration = document.querySelector(".cc-extra .value")
+  ccExpiration.innerText = date.length === 0 ? '01/32' : date
+}
